@@ -53,6 +53,16 @@ Después ejecuta `/dominicode-job-hunt:job-hunt init`, o pide "prepara mi búsqu
 
 Copia [`plugins/dominicode-job-hunt/AGENTS.md`](plugins/dominicode-job-hunt/AGENTS.md) en la raíz de la carpeta de tu búsqueda (o añádelo al `AGENTS.md` que ya tengas). Lleva la skill, los cinco roles y las plantillas en un solo fichero. Para exportar el CV, clona este repositorio; el fichero explica dónde está el script.
 
+### ChatGPT
+
+El chat de ChatGPT no carga plugins ni guarda una carpeta `jobs/`, así que el paquete completo funciona en **Codex** (incluido en los planes de ChatGPT, con la misma cuenta; mira arriba). Para una versión reducida dentro de ChatGPT:
+
+1. Crea un **Proyecto** (o un GPT personalizado) y sube [`plugins/dominicode-job-hunt/AGENTS.md`](plugins/dominicode-job-hunt/AGENTS.md) como archivo.
+2. Añade esta instrucción: *"Sigue las instrucciones de AGENTS.md. Aquí no existen los ficheros de `jobs/`: yo te pego su contenido y tú me devuelves cada fichero que escribirías para que lo guarde yo."*
+3. Pega tus criterios y tu CV, y usa `perfil`, `aplicar` (pegando el texto de la oferta) y `entrevista`.
+
+Lo que pierdes: la búsqueda en LinkedIn con tu sesión del navegador, un tracker que se mantenga entre conversaciones (los ficheros los guardas tú) y la exportación del CV a HTML o DOCX (recibes el CV en Markdown).
+
 ## Primera vez
 
 1. `init`: responde las preguntas (5 minutos). Tus criterios quedan en `jobs/criteria.md` y puedes editarlo cuando quieras.

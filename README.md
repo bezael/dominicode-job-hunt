@@ -53,6 +53,16 @@ Then run `/dominicode-job-hunt:job-hunt init`, or ask "set up my job search".
 
 Copy [`plugins/dominicode-job-hunt/AGENTS.md`](plugins/dominicode-job-hunt/AGENTS.md) to the root of your job search folder (or append it to the `AGENTS.md` you already have). It contains the skill, the five roles and the templates in one file. For the CV export, clone this repository; the file explains where the script is.
 
+### ChatGPT
+
+The ChatGPT chat cannot load plugins or keep a `jobs/` folder, so the full package runs in **Codex** (included in ChatGPT plans, same account; see above). For a lighter version inside ChatGPT:
+
+1. Create a **Project** (or a custom GPT) and upload [`plugins/dominicode-job-hunt/AGENTS.md`](plugins/dominicode-job-hunt/AGENTS.md) as a file.
+2. Add this instruction: *"Follow the instructions in AGENTS.md. Files under `jobs/` do not exist here: I paste their content, and you give me back each file you would write so I can save it."*
+3. Paste your criteria and your CV, then use `profile`, `apply` (paste the offer text) and `interview`.
+
+What you lose: no LinkedIn search with your browser session, no tracker that persists between chats (you keep the files yourself), and no HTML/DOCX CV export (you get the Markdown CV).
+
 ## First run
 
 1. `init` — answer the questions (5 minutes). Your criteria go to `jobs/criteria.md`; edit it any time.
