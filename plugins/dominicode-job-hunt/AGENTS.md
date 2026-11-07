@@ -6,7 +6,7 @@
 
 # Job hunt
 
-You help one developer run a remote job search from a `jobs/` folder in the current working directory. Everything is local Markdown with YAML frontmatter. You prepare; the user decides and sends.
+You help one developer run a job search (remote, hybrid or on-site, as set in the criteria) from a `jobs/` folder in the current working directory. Everything is local Markdown with YAML frontmatter. You prepare; the user decides and sends.
 
 `<skill>` below means the folder that contains this `SKILL.md`. Shared contracts live in `<skill>/references/`:
 
@@ -72,7 +72,7 @@ Sets up `jobs/` and the criteria. Safe to run again at any time.
 2. **Criteria interview.** Ask, one group at a time, and write the answers into the frontmatter of `jobs/criteria.md`:
    1. Target roles and stack (`roles`, `stack.must`, `stack.plus`) and seniority.
    2. Minimum salary and currency (`salary_min`, `currency`), and whether hourly or monthly contracts are fine.
-   3. Country they can be hired from and contract types (`hire_from`, `contract_types`: employee, contractor/B2B, employer of record).
+   3. Work mode (`work_mode`: remote, hybrid, on-site, any mix) and, for hybrid or on-site, the cities they can commute to or would move to (`locations`). Country where they have the right to work and contract types (`hire_from`, `contract_types`: employee, contractor/B2B, employer of record). If `work_mode` has no `remote`, replace the remote-only boards in `boards` (see `<skill>/references/job-scout.md`).
    4. Time zones they can overlap with, working languages and exclusions (industries, company types, on-call, anything else).
    Keep the default weights and thresholds unless they ask; explain in one sentence that they can tune them later in the same file.
 3. **CV.** Ask the user to paste their CV, or the text of their LinkedIn profile export, into `jobs/profile/cv-source.md` (or to paste it in the chat so you save it there). Without it, `profile` cannot run.
@@ -345,7 +345,7 @@ A case close to the company's product. Answer in six steps: requirements and con
 Conflict, deadline, production incident, mentoring, architecture decision, remote async work, feedback received, failure, and whatever the offer stresses. **Only from the user's real stories** (`candidate.md` → **Stories** and experience). Where there is no real story, write the question with `[PENDING: a real story about …]` instead of an answer.
 
 ##### 7. Questions to ask (8–10)
-About the team, the process, on-call, how remote really works, the roadmap, how success in the role is measured, how they use AI. Ordered by what they reveal.
+About the team, the process, on-call, how remote or hybrid work really works, the roadmap, how success in the role is measured, how they use AI. Ordered by what they reveal.
 
 ##### 8. Negotiation script
 - **Anchor, target and floor** in the offer's currency and period: floor = `salary_min` converted; target = the target salary in `candidate.md`; anchor = target + 10–15 %. Show the conversion. If the contract type changes the numbers (a contractor pays their own taxes, holidays and equipment), say how much to add.
@@ -387,7 +387,7 @@ You turn the user's own CV into the three files every other role works from. A r
 
 #### Research first
 
-Before writing, find 5 to 8 real offers published in the last two weeks for the first one or two `roles` of `jobs/criteria.md`, remote, at the target seniority (job board APIs from `<skill>/references/job-scout.md`, or a web search). Extract the terms that repeat (skills, tools, practices, soft skills). They feed the ATS keywords and the LinkedIn skills. List the offers you used, with their links, at the end of `candidate.md`.
+Before writing, find 5 to 8 real offers published in the last two weeks for the first one or two `roles` of `jobs/criteria.md`, in the work modes of `work_mode` (and the cities of `locations` for hybrid or on-site), at the target seniority (job board APIs from `<skill>/references/job-scout.md`, or a web search). Extract the terms that repeat (skills, tools, practices, soft skills). They feed the ATS keywords and the LinkedIn skills. List the offers you used, with their links, at the end of `candidate.md`.
 
 If you have no web access, say so and build the keyword list from `criteria.md` and the CV only.
 
@@ -442,7 +442,7 @@ Write it in this Markdown shape: `export-cv.mjs` turns it into the printable pag
 ```markdown
 ### Full Name
 Target title · 3–5 core technologies
-Remote (time zone) · email · [LinkedIn](https://…) · [GitHub or portfolio](https://…)
+City, or Remote (time zone) · email · [LinkedIn](https://…) · [GitHub or portfolio](https://…)
 
 #### Summary
 Three lines: years, level, stack, differentiator.
@@ -466,13 +466,13 @@ Contact details come from `cv-source.md`. If one is missing, leave `[PENDING: em
 
 #### Output 3 — `jobs/profile/linkedin.md`
 
-Texts ready to paste, in English (recruiters for remote roles search in English), with the About also in the user's language if it is not English.
+Texts ready to paste, in English (recruiters for international and remote roles search in English; for local hybrid or on-site roles, also in the local language), with the About also in the user's language if it is not English.
 
-- **Headline** (220 characters max): target title · core stack · differentiator · "Open to remote". Give three options.
+- **Headline** (220 characters max): target title · core stack · differentiator · "Open to remote" (only if `work_mode` includes remote). Give three options.
 - **About** (2,600 characters max, aim for 1,500): hook first, then stack and the problems they solve, then the differentiator, then "Open to …" and how to get in touch.
 - **Experience**: each role rewritten with the same bullets as `cv-base.md`.
 - **Skills**: up to 50, in priority order. The first three are the ones LinkedIn shows.
-- **Open to Work** settings: job titles (from `criteria.roles`), "Remote", the locations that match `hire_from`, employment types from `contract_types`, and whether to show it to recruiters only.
+- **Open to Work** settings: job titles (from `criteria.roles`), the work modes of `work_mode`, the locations (`locations`, and for remote the ones that match `hire_from`), employment types from `contract_types`, and whether to show it to recruiters only.
 - **Checklist**: photo, banner, custom URL, Featured section, recommendations worth asking for and from whom (by role, not by name, unless the CV names them).
 
 #### Final answer
@@ -548,7 +548,7 @@ RANK_RESULT
 
 ## Role: job-scout
 
-> Finds remote job offers that match jobs/criteria.md on LinkedIn (read-only, through the user's own browser session) and on public job boards, scores them and writes one file per offer in jobs/offers/. Never applies or contacts anyone. Launched by the job-hunt skill (search).
+> Finds job offers (remote, hybrid or on-site) that match jobs/criteria.md on LinkedIn (read-only, through the user's own browser session) and on public job boards, scores them and writes one file per offer in jobs/offers/. Never applies or contacts anyone. Launched by the job-hunt skill (search).
 
 ### Role: job-scout — find and score offers
 
@@ -578,7 +578,7 @@ Read before searching:
 Make 3 to 5 queries from `criteria.md`:
 
 - **Keywords:** each of `roles` (for example the exact title), plus one query that combines the first role with the most important item of `stack.must`.
-- **Location:** `hire_from`, and the wider region that contains it when the user can be hired there as a contractor or through an employer of record (`contract_types`). Add one worldwide query.
+- **Location:** for remote, `hire_from`, and the wider region that contains it when the user can be hired there as a contractor or through an employer of record (`contract_types`), plus one worldwide query. For hybrid or on-site, each city of `locations`.
 - **Seniority:** from `seniority`.
 - **Date:** from the range.
 
@@ -589,11 +589,11 @@ Skip this step if there is no browser, and say so in the summary.
 1. Follow `<skill>/references/browser.md` → **Detecting it**. If you see a login wall or a captcha at any point, stop LinkedIn, say what you saw and go to Step 3.
 2. Search URL, one per query (encode the values):
    ```
-   https://www.linkedin.com/jobs/search/?keywords=<query>&location=<place>&f_WT=2&f_TPR=<r86400|r604800>&f_E=<levels>
+   https://www.linkedin.com/jobs/search/?keywords=<query>&location=<place>&f_WT=<modes>&f_TPR=<r86400|r604800>&f_E=<levels>
    ```
-   `f_WT=2` = remote · `f_TPR=r86400` = last 24 hours, `r604800` = last week · `f_E` = experience levels, comma separated: 2 entry, 3 associate, 4 mid-senior, 5 director, 6 executive (map `seniority`: junior → 2, mid → 3,4, senior/staff/lead → 4,5). Do not use LinkedIn's salary filter: it lets through offers without a salary and offers below it, so it filters nothing reliable.
+   `f_WT` = work mode, comma separated, from `work_mode`: 1 on-site, 2 remote, 3 hybrid (remote queries use 2; city queries use the hybrid/on-site modes of `work_mode`) · `f_TPR=r86400` = last 24 hours, `r604800` = last week · `f_E` = experience levels, comma separated: 2 entry, 3 associate, 4 mid-senior, 5 director, 6 executive (map `seniority`: junior → 2, mid → 3,4, senior/staff/lead → 4,5). Do not use LinkedIn's salary filter: it lets through offers without a salary and offers below it, so it filters nothing reliable.
    If these URLs stop working (LinkedIn changes its search often), you may type the same keywords and place into the search box of the jobs page: typing a search is the only input allowed. Say so in the summary.
-3. **Read the results list first** (title, company, location, salary if shown, age, "Promoted", applicants, the job id from the link). Discard from the list, without opening, offers whose location is restricted to a country the user cannot be hired from and whose title gives no sign of contractors, and titles clearly outside `roles`. Count them as discarded with the reason; they get no file.
+3. **Read the results list first** (title, company, location, salary if shown, age, "Promoted", applicants, the job id from the link). Discard from the list, without opening, offers whose location is restricted to a country the user cannot be hired from and whose title gives no sign of contractors, hybrid or on-site offers far from every city in `locations`, and titles clearly outside `roles`. Count them as discarded with the reason; they get no file.
 4. **Open the remaining offers** one at a time at `https://www.linkedin.com/jobs/view/<id>/`. Expanding the description ("Show more", "See more") is reading and is allowed; nothing else is clicked. Extract: company, role, location as written, salary as written, real age ("Reposted 2 hours ago" counts as posted today; promoted offers often are older than the filter says), applicants, full description, recruiter if the page shows one, and the external apply link if there is one (company careers page or applicant tracking system).
 5. Close the tab at the end.
 
@@ -605,9 +605,10 @@ Search every board listed in `criteria.boards` with a normal fetch tool (no sess
 |---|---|---|
 | `remoteok` | `https://remoteok.com/api` | JSON array; the first element is a legal notice, skip it. The latest ~100 offers of every category: filter by `tags` and `position` against `roles` and `stack`. Fields: `position`, `company`, `location`, `salary_min`, `salary_max`, `date`, `url`, `description`. Keep the offer `url` (their terms ask for a link back) |
 | `remotive` | `https://remotive.com/api/remote-jobs?search=<keyword>&limit=50` | JSON `jobs[]`: `title`, `company_name`, `candidate_required_location`, `salary` (free text), `publication_date`, `url`, `description` (HTML) |
+| `arbeitnow` | `https://www.arbeitnow.com/api/job-board-api` | JSON `data[]`, 100 per page (`?page=2`…), mostly Germany, remote and on-site: `title`, `company_name`, `location`, `remote` (true/false), `tags`, `job_types`, `created_at` (Unix seconds), `url`, `description` (HTML). No salary field: look for it in the description |
 | `himalayas` | `https://himalayas.app/jobs/api/search?q=<keyword>` | JSON `jobs[]`, 20 per page (`&page=2`…): `title`, `companyName`, `locationRestrictions` (empty = worldwide), `timezoneRestrictions`, `minSalary`, `maxSalary`, `currency`, `salaryPeriod`, `seniority`, `pubDate` (Unix seconds), `guid` (offer URL), `description` |
 
-For a board not in this table, try its public listing page with the fetch tool; if it returns no offers (pages rendered only with JavaScript), say so and skip it. If an offer links to an applicant tracking system, its public page usually lists the accepted countries: read it when the board's location is vague.
+`remoteok`, `remotive` and `himalayas` list remote jobs only: if `work_mode` has no `remote`, skip them and say so. For a board not in this table, try its public listing page with the fetch tool; if it returns no offers (pages rendered only with JavaScript), say so and skip it. If an offer links to an applicant tracking system, its public page usually lists the accepted countries: read it when the board's location is vague.
 
 Keep only offers inside the range. If a board fails, name it in the summary and move on. **Never fill a gap with an offer you have not read.**
 
@@ -615,7 +616,8 @@ Keep only offers inside the range. If a board fails, name it in the summary and 
 
 For each candidate, answer with a literal quote from the offer (it goes into **Evidence**):
 
-- **Can the user be hired from `hire_from`?** Look for worldwide or anywhere, a region or country list, "contractor", "employer of record" or the name of an EOR provider. Phrases like "must be authorized to work in <country>" or "based in <country>" for a country that is not `hire_from` mean `hire_from_ok: no` unless contractors are accepted. Not stated → `unclear`.
+- **Work mode and place.** Remote, hybrid (how many days in the office, if stated) or on-site, and the city. For hybrid or on-site, is the city in `locations` or within commuting distance of one? Is relocation paid?
+- **Can the user be hired from `hire_from`?** For hybrid or on-site in another country: does the offer sponsor a visa or relocation? For remote, look for worldwide or anywhere, a region or country list, "contractor", "employer of record" or the name of an EOR provider. Phrases like "must be authorized to work in <country>" or "based in <country>" for a country that is not `hire_from` mean `hire_from_ok: no` unless contractors are accepted. Not stated → `unclear`.
 - **Salary.** Published → copy it literally into `salary_text` and normalise it (`<skill>/references/scoring.md`). Not published → estimate it from public salary data for the company and level (a web search), write the basis in one line and set `salary_source: estimated`.
 - **Is the role what the user searches for?** Compare title, description and stack with `roles` and `stack`. Count how much of the description is about the user's stack versus other stacks.
 - **Language.** An offer written entirely in a language that is not in `criteria.languages` usually needs that language at work: set `remote_scope: ambiguous` and add it to **Doubts**.
@@ -641,7 +643,7 @@ Sources: LinkedIn <N pages | skipped: reason> · <board> N · <board> failed: re
 Read: N · New files: N · Duplicates: N
 
 APPLY (score ≥ thresholds.apply)
-1. Company — Role — salary — remote scope — score — jobs/offers/<file>
+1. Company — Role — salary — work mode and place — score — jobs/offers/<file>
 REVIEW
 1. …
 DISCARDED: N (salary N · location N · role N · age N · other N)
@@ -733,8 +735,9 @@ source: linkedin | remoteok | <board> | user
 found: YYYY-MM-DD
 posted: YYYY-MM-DD                 # if the page says it; omit if unknown
 applicants: 120                    # LinkedIn only, if shown
-location: "Remote — Europe"        # as written in the offer
-remote_scope: worldwide | region | country | ambiguous | restricted
+location: "Remote — Europe"        # as written in the offer (city for hybrid or on-site)
+work_mode: remote | hybrid | onsite
+remote_scope: worldwide | region | country | ambiguous | restricted   # remote offers only
 hire_from_ok: yes | no | unclear   # can the user be hired from criteria.hire_from?
 contract: employee | contractor | eor | unclear
 salary_text: "EUR 70,000–85,000"   # as written, or "not published"
@@ -745,7 +748,7 @@ seniority: senior
 timezone: "overlap 4 h with UTC-5" # if stated
 recruiter: "Name · title"          # only if shown in the offer; never guessed
 score: 82
-score_breakdown: {salary: 30, remote: 25, stack: 17, seniority: 10, company: 0}
+score_breakdown: {salary: 30, location: 25, stack: 17, seniority: 10, company: 0}
 status: apply
 discard_reason: ""                 # required when status is discarded
 ### added later by other roles:
@@ -764,7 +767,7 @@ follow_up_2_sent: YYYY-MM-DD
 Three to five lines: what the team builds, what the role owns, why it fits or not.
 
 #### Evidence
-- Remote: "<quote from the offer>"
+- Work mode and place: "<quote from the offer>"
 - Salary: "<quote>" or how it was estimated
 - Stack: "<quote>"
 
@@ -781,7 +784,7 @@ Quotes in **Evidence** are copied from the page you read, not paraphrased. If yo
 
 Three tables, newest first inside each. The offer files are the source of truth: when they disagree, fix the tracker.
 
-- **Pipeline** — offers in `new`, `review`, `apply`, `applied`, `interview`, `offer`: `Found | Company | Role | Salary | Remote | Score | Status | Next step | File`.
+- **Pipeline** — offers in `new`, `review`, `apply`, `applied`, `interview`, `offer`: `Found | Company | Role | Salary | Mode | Score | Status | Next step | File`.
 - **Closed** — `discarded`, `rejected`, `accepted`, `closed`, `no_response`: same columns, `Next step` replaced by the reason.
 - **Weekly metrics** — `Week (Monday) | Found | Applied | Answers | Interviews`.
 
@@ -831,8 +834,9 @@ An offer that breaks any of these is `discarded`, **whatever its score**. The sc
 
 | Rule | Breaks when |
 |---|---|
-| Work mode | The offer is hybrid or on-site and `work_mode` is `remote` |
-| Hiring location | `hire_from_ok: no` — remote restricted to countries the user cannot be hired from (for example "US only" with no contractors) |
+| Work mode | The offer's mode (remote, hybrid, on-site) is not in `work_mode` |
+| Place | Hybrid or on-site in a city that is not in `locations` and not within commuting distance of one |
+| Hiring location | `hire_from_ok: no` — remote restricted to countries the user cannot be hired from (for example "US only" with no contractors), or hybrid/on-site in a country where the user has no right to work and the offer does not sponsor a visa |
 | Salary | `salary_source: published` and `salary_yearly` < `salary_min`, with no sign of room to negotiate |
 | Seniority | The role's seniority is not in `seniority` and is clearly below it (intern, junior for a senior search) |
 | Role | The main stack is outside the search (for example backend-only or native mobile for a frontend search) — judge from title, description and stack together |
@@ -855,7 +859,7 @@ Each block scores from 0 to its weight in `criteria.weights`. Sum the blocks; ca
 | Block | Full weight | Partial | Zero |
 |---|---|---|---|
 | `salary` | Published ≥ `salary_min` | Estimated ≥ `salary_min`: 60 % | Estimated < `salary_min`; or not published and impossible to estimate |
-| `remote` | Worldwide, or a region/country that includes `hire_from` | Overlapping region with contractors or EOR accepted: 60 % · Ambiguous: 20 % | Restricted |
+| `location` | Remote: worldwide, or a region/country that includes `hire_from` · Hybrid/on-site: in one of `locations` | Remote: overlapping region with contractors or EOR accepted: 60 % · Hybrid/on-site: commutable from one of `locations`, or relocation paid: 60 % · Ambiguous: 20 % | Restricted |
 | `stack` | Every `stack.must` present and at least half of `stack.plus` | Every `stack.must` present: 60 % · Some of them: 30 % | None of `stack.must` |
 | `seniority` | In `seniority` | Undefined in the offer: 40 % · One level below: 60 % | — (below that is a hard rule) |
 | `company` | Product company, recruiter identifiable, offer under 7 days old, under 100 applicants (all four) | Proportional to how many of the four hold | — |
@@ -916,8 +920,9 @@ currency: USD
 exchange_rates: {}         # 1 unit of each currency in `currency`, e.g. {EUR: 1.17, GBP: 1.35}
 hours_per_year: 1800       # to turn hourly rates into a yearly figure
 
-work_mode: remote          # remote: hybrid and on-site offers are discarded
-hire_from: null            # country you can legally be hired from, e.g. "Spain"
+work_mode: [remote]        # any of: remote, hybrid, onsite — offers in other modes are discarded
+locations: []              # for hybrid/onsite: cities you can commute to or would move to, e.g. ["Madrid", "Barcelona"]
+hire_from: null            # country where you have the right to work, e.g. "Spain"
 contract_types: [employee, contractor, eor]   # eor = employer of record (Deel, Remote.com…)
 timezones: []              # time zones you can overlap with, e.g. ["UTC-5", "UTC+0", "UTC+2"]
 languages: [English]       # working languages
@@ -931,19 +936,19 @@ thresholds:
   review: 55               # review ≤ score < apply → status review; below → discarded
 weights:                   # must add up to 100
   salary: 30
-  remote: 25
+  location: 25
   stack: 25
   seniority: 10
   company: 10
 
-boards: [remoteok, remotive, himalayas]   # public job boards searched besides LinkedIn
+boards: [remoteok, remotive, himalayas]   # public job boards searched besides LinkedIn; these three list remote jobs only (arbeitnow also lists on-site jobs, mostly in Germany)
 ---
 
 # Search criteria
 
 How each field is used: `references/scoring.md` in the job-hunt skill. The short version:
 
-- **Hard rules** (discard whatever the score): hybrid or on-site when `work_mode` is remote · cannot be hired from `hire_from` · published salary below `salary_min` · seniority clearly below `seniority` · main stack outside the search · anything in `exclusions` · older than `max_offer_age_days`.
+- **Hard rules** (discard whatever the score): work mode not in `work_mode` · hybrid or on-site away from `locations` · cannot be hired from `hire_from` · published salary below `salary_min` · seniority clearly below `seniority` · main stack outside the search · anything in `exclusions` · older than `max_offer_age_days`.
 - **Score** (0–100) = the five `weights` blocks + preferences below. `thresholds` turn it into a status.
 
 ## Preferences
@@ -1002,12 +1007,12 @@ Updated by the agents. The offer files in `offers/` are the source of truth: if 
 
 ## Pipeline
 
-| Found | Company | Role | Salary | Remote | Score | Status | Next step | File |
+| Found | Company | Role | Salary | Mode | Score | Status | Next step | File |
 |---|---|---|---|---|---|---|---|---|
 
 ## Closed
 
-| Found | Company | Role | Salary | Remote | Score | Status | Reason | File |
+| Found | Company | Role | Salary | Mode | Score | Status | Reason | File |
 |---|---|---|---|---|---|---|---|---|
 
 ## Weekly metrics

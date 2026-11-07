@@ -35,8 +35,9 @@ source: linkedin | remoteok | <board> | user
 found: YYYY-MM-DD
 posted: YYYY-MM-DD                 # if the page says it; omit if unknown
 applicants: 120                    # LinkedIn only, if shown
-location: "Remote — Europe"        # as written in the offer
-remote_scope: worldwide | region | country | ambiguous | restricted
+location: "Remote — Europe"        # as written in the offer (city for hybrid or on-site)
+work_mode: remote | hybrid | onsite
+remote_scope: worldwide | region | country | ambiguous | restricted   # remote offers only
 hire_from_ok: yes | no | unclear   # can the user be hired from criteria.hire_from?
 contract: employee | contractor | eor | unclear
 salary_text: "EUR 70,000–85,000"   # as written, or "not published"
@@ -47,7 +48,7 @@ seniority: senior
 timezone: "overlap 4 h with UTC-5" # if stated
 recruiter: "Name · title"          # only if shown in the offer; never guessed
 score: 82
-score_breakdown: {salary: 30, remote: 25, stack: 17, seniority: 10, company: 0}
+score_breakdown: {salary: 30, location: 25, stack: 17, seniority: 10, company: 0}
 status: apply
 discard_reason: ""                 # required when status is discarded
 # added later by other roles:
@@ -66,7 +67,7 @@ follow_up_2_sent: YYYY-MM-DD
 Three to five lines: what the team builds, what the role owns, why it fits or not.
 
 ## Evidence
-- Remote: "<quote from the offer>"
+- Work mode and place: "<quote from the offer>"
 - Salary: "<quote>" or how it was estimated
 - Stack: "<quote>"
 
@@ -83,7 +84,7 @@ Quotes in **Evidence** are copied from the page you read, not paraphrased. If yo
 
 Three tables, newest first inside each. The offer files are the source of truth: when they disagree, fix the tracker.
 
-- **Pipeline** — offers in `new`, `review`, `apply`, `applied`, `interview`, `offer`: `Found | Company | Role | Salary | Remote | Score | Status | Next step | File`.
+- **Pipeline** — offers in `new`, `review`, `apply`, `applied`, `interview`, `offer`: `Found | Company | Role | Salary | Mode | Score | Status | Next step | File`.
 - **Closed** — `discarded`, `rejected`, `accepted`, `closed`, `no_response`: same columns, `Next step` replaced by the reason.
 - **Weekly metrics** — `Week (Monday) | Found | Applied | Answers | Interviews`.
 

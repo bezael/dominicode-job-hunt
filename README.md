@@ -2,7 +2,7 @@
 
 **English** · [Español](README.es.md)
 
-A remote job search run by your coding agent. You write down what you are looking for once; the agent finds offers, scores them against your criteria, prepares a tailored application for the ones worth it, gets you ready for interviews and reminds you to follow up.
+A job search run by your coding agent: remote, hybrid or on-site, you choose. You write down what you are looking for once; the agent finds offers, scores them against your criteria, prepares a tailored application for the ones worth it, gets you ready for interviews and reminds you to follow up.
 
 Works in **Codex**, **Claude Code** and any tool that reads **`AGENTS.md`**. Free, MIT licensed.
 
@@ -12,9 +12,9 @@ Works in **Codex**, **Claude Code** and any tool that reads **`AGENTS.md`**. Fre
 
 | Command | What it does |
 |---|---|
-| `init` | Creates `jobs/` and interviews you about your criteria: roles, stack, minimum salary, where you can be hired from, contract types, time zones, exclusions |
+| `init` | Creates `jobs/` and interviews you about your criteria: roles, stack, minimum salary, remote/hybrid/on-site and cities, where you can be hired from, contract types, time zones, exclusions |
 | `profile` | Turns your CV into a candidate profile, a one-page base CV and LinkedIn texts written for recruiters. Missing facts come back as `[PENDING]`, never invented |
-| `search [today\|week]` | Finds remote offers on LinkedIn (read-only, through your own browser session, if your agent has one) and on public job boards (RemoteOK, Remotive, Himalayas). One file per offer with a score and the evidence behind it |
+| `search [today\|week]` | Finds offers in the work modes and cities you chose, on LinkedIn (read-only, through your own browser session, if your agent has one) and on public job boards (RemoteOK, Remotive and Himalayas for remote; Arbeitnow for on-site in Germany and Europe). One file per offer with a score and the evidence behind it |
 | `rank [N]` | Re-checks pending offers (still open? still a fit?) and gives you this week's shortlist. Nothing is closed without your OK |
 | `apply <offer>` | Tailored CV (Markdown + printable HTML, DOCX if pandoc is installed), short cover letter, recruiter message, form answers and a send checklist |
 | `interview <offer> [type]` | Company research, likely technical questions for the offer's stack, live coding, system design, STAR answers from your real stories, questions to ask, negotiation script |

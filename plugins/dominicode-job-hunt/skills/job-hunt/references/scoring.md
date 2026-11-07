@@ -8,8 +8,9 @@ An offer that breaks any of these is `discarded`, **whatever its score**. The sc
 
 | Rule | Breaks when |
 |---|---|
-| Work mode | The offer is hybrid or on-site and `work_mode` is `remote` |
-| Hiring location | `hire_from_ok: no` — remote restricted to countries the user cannot be hired from (for example "US only" with no contractors) |
+| Work mode | The offer's mode (remote, hybrid, on-site) is not in `work_mode` |
+| Place | Hybrid or on-site in a city that is not in `locations` and not within commuting distance of one |
+| Hiring location | `hire_from_ok: no` — remote restricted to countries the user cannot be hired from (for example "US only" with no contractors), or hybrid/on-site in a country where the user has no right to work and the offer does not sponsor a visa |
 | Salary | `salary_source: published` and `salary_yearly` < `salary_min`, with no sign of room to negotiate |
 | Seniority | The role's seniority is not in `seniority` and is clearly below it (intern, junior for a senior search) |
 | Role | The main stack is outside the search (for example backend-only or native mobile for a frontend search) — judge from title, description and stack together |
@@ -32,7 +33,7 @@ Each block scores from 0 to its weight in `criteria.weights`. Sum the blocks; ca
 | Block | Full weight | Partial | Zero |
 |---|---|---|---|
 | `salary` | Published ≥ `salary_min` | Estimated ≥ `salary_min`: 60 % | Estimated < `salary_min`; or not published and impossible to estimate |
-| `remote` | Worldwide, or a region/country that includes `hire_from` | Overlapping region with contractors or EOR accepted: 60 % · Ambiguous: 20 % | Restricted |
+| `location` | Remote: worldwide, or a region/country that includes `hire_from` · Hybrid/on-site: in one of `locations` | Remote: overlapping region with contractors or EOR accepted: 60 % · Hybrid/on-site: commutable from one of `locations`, or relocation paid: 60 % · Ambiguous: 20 % | Restricted |
 | `stack` | Every `stack.must` present and at least half of `stack.plus` | Every `stack.must` present: 60 % · Some of them: 30 % | None of `stack.must` |
 | `seniority` | In `seniority` | Undefined in the offer: 40 % · One level below: 60 % | — (below that is a hard rule) |
 | `company` | Product company, recruiter identifiable, offer under 7 days old, under 100 applicants (all four) | Proportional to how many of the four hold | — |

@@ -14,8 +14,9 @@ currency: USD
 exchange_rates: {}         # 1 unit of each currency in `currency`, e.g. {EUR: 1.17, GBP: 1.35}
 hours_per_year: 1800       # to turn hourly rates into a yearly figure
 
-work_mode: remote          # remote: hybrid and on-site offers are discarded
-hire_from: null            # country you can legally be hired from, e.g. "Spain"
+work_mode: [remote]        # any of: remote, hybrid, onsite — offers in other modes are discarded
+locations: []              # for hybrid/onsite: cities you can commute to or would move to, e.g. ["Madrid", "Barcelona"]
+hire_from: null            # country where you have the right to work, e.g. "Spain"
 contract_types: [employee, contractor, eor]   # eor = employer of record (Deel, Remote.com…)
 timezones: []              # time zones you can overlap with, e.g. ["UTC-5", "UTC+0", "UTC+2"]
 languages: [English]       # working languages
@@ -29,19 +30,19 @@ thresholds:
   review: 55               # review ≤ score < apply → status review; below → discarded
 weights:                   # must add up to 100
   salary: 30
-  remote: 25
+  location: 25
   stack: 25
   seniority: 10
   company: 10
 
-boards: [remoteok, remotive, himalayas]   # public job boards searched besides LinkedIn
+boards: [remoteok, remotive, himalayas]   # public job boards searched besides LinkedIn; these three list remote jobs only (arbeitnow also lists on-site jobs, mostly in Germany)
 ---
 
 # Search criteria
 
 How each field is used: `references/scoring.md` in the job-hunt skill. The short version:
 
-- **Hard rules** (discard whatever the score): hybrid or on-site when `work_mode` is remote · cannot be hired from `hire_from` · published salary below `salary_min` · seniority clearly below `seniority` · main stack outside the search · anything in `exclusions` · older than `max_offer_age_days`.
+- **Hard rules** (discard whatever the score): work mode not in `work_mode` · hybrid or on-site away from `locations` · cannot be hired from `hire_from` · published salary below `salary_min` · seniority clearly below `seniority` · main stack outside the search · anything in `exclusions` · older than `max_offer_age_days`.
 - **Score** (0–100) = the five `weights` blocks + preferences below. `thresholds` turn it into a status.
 
 ## Preferences

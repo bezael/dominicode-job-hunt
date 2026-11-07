@@ -26,7 +26,7 @@ Read before searching:
 Make 3 to 5 queries from `criteria.md`:
 
 - **Keywords:** each of `roles` (for example the exact title), plus one query that combines the first role with the most important item of `stack.must`.
-- **Location:** `hire_from`, and the wider region that contains it when the user can be hired there as a contractor or through an employer of record (`contract_types`). Add one worldwide query.
+- **Location:** for remote, `hire_from`, and the wider region that contains it when the user can be hired there as a contractor or through an employer of record (`contract_types`), plus one worldwide query. For hybrid or on-site, each city of `locations`.
 - **Seniority:** from `seniority`.
 - **Date:** from the range.
 
@@ -37,11 +37,11 @@ Skip this step if there is no browser, and say so in the summary.
 1. Follow `<skill>/references/browser.md` → **Detecting it**. If you see a login wall or a captcha at any point, stop LinkedIn, say what you saw and go to Step 3.
 2. Search URL, one per query (encode the values):
    ```
-   https://www.linkedin.com/jobs/search/?keywords=<query>&location=<place>&f_WT=2&f_TPR=<r86400|r604800>&f_E=<levels>
+   https://www.linkedin.com/jobs/search/?keywords=<query>&location=<place>&f_WT=<modes>&f_TPR=<r86400|r604800>&f_E=<levels>
    ```
-   `f_WT=2` = remote · `f_TPR=r86400` = last 24 hours, `r604800` = last week · `f_E` = experience levels, comma separated: 2 entry, 3 associate, 4 mid-senior, 5 director, 6 executive (map `seniority`: junior → 2, mid → 3,4, senior/staff/lead → 4,5). Do not use LinkedIn's salary filter: it lets through offers without a salary and offers below it, so it filters nothing reliable.
+   `f_WT` = work mode, comma separated, from `work_mode`: 1 on-site, 2 remote, 3 hybrid (remote queries use 2; city queries use the hybrid/on-site modes of `work_mode`) · `f_TPR=r86400` = last 24 hours, `r604800` = last week · `f_E` = experience levels, comma separated: 2 entry, 3 associate, 4 mid-senior, 5 director, 6 executive (map `seniority`: junior → 2, mid → 3,4, senior/staff/lead → 4,5). Do not use LinkedIn's salary filter: it lets through offers without a salary and offers below it, so it filters nothing reliable.
    If these URLs stop working (LinkedIn changes its search often), you may type the same keywords and place into the search box of the jobs page: typing a search is the only input allowed. Say so in the summary.
-3. **Read the results list first** (title, company, location, salary if shown, age, "Promoted", applicants, the job id from the link). Discard from the list, without opening, offers whose location is restricted to a country the user cannot be hired from and whose title gives no sign of contractors, and titles clearly outside `roles`. Count them as discarded with the reason; they get no file.
+3. **Read the results list first** (title, company, location, salary if shown, age, "Promoted", applicants, the job id from the link). Discard from the list, without opening, offers whose location is restricted to a country the user cannot be hired from and whose title gives no sign of contractors, hybrid or on-site offers far from every city in `locations`, and titles clearly outside `roles`. Count them as discarded with the reason; they get no file.
 4. **Open the remaining offers** one at a time at `https://www.linkedin.com/jobs/view/<id>/`. Expanding the description ("Show more", "See more") is reading and is allowed; nothing else is clicked. Extract: company, role, location as written, salary as written, real age ("Reposted 2 hours ago" counts as posted today; promoted offers often are older than the filter says), applicants, full description, recruiter if the page shows one, and the external apply link if there is one (company careers page or applicant tracking system).
 5. Close the tab at the end.
 
@@ -53,9 +53,10 @@ Search every board listed in `criteria.boards` with a normal fetch tool (no sess
 |---|---|---|
 | `remoteok` | `https://remoteok.com/api` | JSON array; the first element is a legal notice, skip it. The latest ~100 offers of every category: filter by `tags` and `position` against `roles` and `stack`. Fields: `position`, `company`, `location`, `salary_min`, `salary_max`, `date`, `url`, `description`. Keep the offer `url` (their terms ask for a link back) |
 | `remotive` | `https://remotive.com/api/remote-jobs?search=<keyword>&limit=50` | JSON `jobs[]`: `title`, `company_name`, `candidate_required_location`, `salary` (free text), `publication_date`, `url`, `description` (HTML) |
+| `arbeitnow` | `https://www.arbeitnow.com/api/job-board-api` | JSON `data[]`, 100 per page (`?page=2`…), mostly Germany, remote and on-site: `title`, `company_name`, `location`, `remote` (true/false), `tags`, `job_types`, `created_at` (Unix seconds), `url`, `description` (HTML). No salary field: look for it in the description |
 | `himalayas` | `https://himalayas.app/jobs/api/search?q=<keyword>` | JSON `jobs[]`, 20 per page (`&page=2`…): `title`, `companyName`, `locationRestrictions` (empty = worldwide), `timezoneRestrictions`, `minSalary`, `maxSalary`, `currency`, `salaryPeriod`, `seniority`, `pubDate` (Unix seconds), `guid` (offer URL), `description` |
 
-For a board not in this table, try its public listing page with the fetch tool; if it returns no offers (pages rendered only with JavaScript), say so and skip it. If an offer links to an applicant tracking system, its public page usually lists the accepted countries: read it when the board's location is vague.
+`remoteok`, `remotive` and `himalayas` list remote jobs only: if `work_mode` has no `remote`, skip them and say so. For a board not in this table, try its public listing page with the fetch tool; if it returns no offers (pages rendered only with JavaScript), say so and skip it. If an offer links to an applicant tracking system, its public page usually lists the accepted countries: read it when the board's location is vague.
 
 Keep only offers inside the range. If a board fails, name it in the summary and move on. **Never fill a gap with an offer you have not read.**
 
@@ -63,7 +64,8 @@ Keep only offers inside the range. If a board fails, name it in the summary and 
 
 For each candidate, answer with a literal quote from the offer (it goes into **Evidence**):
 
-- **Can the user be hired from `hire_from`?** Look for worldwide or anywhere, a region or country list, "contractor", "employer of record" or the name of an EOR provider. Phrases like "must be authorized to work in <country>" or "based in <country>" for a country that is not `hire_from` mean `hire_from_ok: no` unless contractors are accepted. Not stated → `unclear`.
+- **Work mode and place.** Remote, hybrid (how many days in the office, if stated) or on-site, and the city. For hybrid or on-site, is the city in `locations` or within commuting distance of one? Is relocation paid?
+- **Can the user be hired from `hire_from`?** For hybrid or on-site in another country: does the offer sponsor a visa or relocation? For remote, look for worldwide or anywhere, a region or country list, "contractor", "employer of record" or the name of an EOR provider. Phrases like "must be authorized to work in <country>" or "based in <country>" for a country that is not `hire_from` mean `hire_from_ok: no` unless contractors are accepted. Not stated → `unclear`.
 - **Salary.** Published → copy it literally into `salary_text` and normalise it (`<skill>/references/scoring.md`). Not published → estimate it from public salary data for the company and level (a web search), write the basis in one line and set `salary_source: estimated`.
 - **Is the role what the user searches for?** Compare title, description and stack with `roles` and `stack`. Count how much of the description is about the user's stack versus other stacks.
 - **Language.** An offer written entirely in a language that is not in `criteria.languages` usually needs that language at work: set `remote_scope: ambiguous` and add it to **Doubts**.
@@ -89,7 +91,7 @@ Sources: LinkedIn <N pages | skipped: reason> · <board> N · <board> failed: re
 Read: N · New files: N · Duplicates: N
 
 APPLY (score ≥ thresholds.apply)
-1. Company — Role — salary — remote scope — score — jobs/offers/<file>
+1. Company — Role — salary — work mode and place — score — jobs/offers/<file>
 REVIEW
 1. …
 DISCARDED: N (salary N · location N · role N · age N · other N)

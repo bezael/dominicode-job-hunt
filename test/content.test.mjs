@@ -115,6 +115,7 @@ test('criteria template has every field the agents read', () => {
     'salary_min',
     'currency',
     'work_mode',
+    'locations',
     'hire_from',
     'contract_types',
     'timezones',
@@ -128,6 +129,19 @@ test('criteria template has every field the agents read', () => {
   }
   const body = read(join(TEMPLATES, 'criteria.md'));
   assert.match(body, /## Statuses/);
+});
+
+test('work mode is a choice, not remote only', () => {
+  const criteria = read(join(TEMPLATES, 'criteria.md'));
+  assert.match(criteria, /^work_mode: \[remote\]\s+# any of: remote, hybrid, onsite/m);
+  // Score blocks are the same in the criteria weights and in the offer template.
+  const weights = [...criteria.matchAll(/^ {2}(\w+): \d+/gm)].map((m) => m[1]).filter((k) => !['apply', 'review'].includes(k));
+  const files = read(join(SKILL_DIR, 'references', 'files.md'));
+  const breakdown = files.match(/score_breakdown: \{([^}]*)\}/)[1].split(',').map((p) => p.split(':')[0].trim());
+  assert.deepEqual(breakdown.sort(), weights.sort());
+  const scout = read(join(SKILL_DIR, 'references', 'job-scout.md'));
+  assert.doesNotMatch(scout, /f_WT=2&/, 'the LinkedIn search must take the modes from work_mode');
+  assert.match(scout, /1 on-site, 2 remote, 3 hybrid/);
 });
 
 test('the jobs/.gitignore template keeps personal data out of git', () => {

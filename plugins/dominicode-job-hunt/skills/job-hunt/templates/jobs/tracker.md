@@ -9,12 +9,12 @@ Updated by the agents. The offer files in `offers/` are the source of truth: if 
 
 ## Pipeline
 
-| Found | Company | Role | Salary | Remote | Score | Status | Next step | File |
+| Found | Company | Role | Salary | Mode | Score | Status | Next step | File |
 |---|---|---|---|---|---|---|---|---|
 
 ## Closed
 
-| Found | Company | Role | Salary | Remote | Score | Status | Reason | File |
+| Found | Company | Role | Salary | Mode | Score | Status | Reason | File |
 |---|---|---|---|---|---|---|---|---|
 
 ## Weekly metrics

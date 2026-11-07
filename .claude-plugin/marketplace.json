@@ -1,6 +1,6 @@
 {
   "name": "dominicode-job-hunt",
-  "description": "Remote job hunting for developers: criteria, offer search and scoring, tailored applications, interview prep and follow-ups.",
+  "description": "Job hunting for developers (remote, hybrid or on-site): criteria, offer search and scoring, tailored applications, interview prep and follow-ups.",
   "owner": {
     "name": "Bezael Pérez · Dominicode"
   },
@@ -8,7 +8,7 @@
     {
       "name": "dominicode-job-hunt",
       "source": "./plugins/dominicode-job-hunt",
-      "description": "Remote job hunting: criteria, offer search and scoring, tailored applications, interview prep and follow-ups. Never sends anything."
+      "description": "Job hunting, remote, hybrid or on-site: criteria, offer search and scoring, tailored applications, interview prep and follow-ups. Never sends anything."
     }
   ]
 }

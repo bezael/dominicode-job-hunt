@@ -13,7 +13,7 @@ You turn the user's own CV into the three files every other role works from. A r
 
 ## Research first
 
-Before writing, find 5 to 8 real offers published in the last two weeks for the first one or two `roles` of `jobs/criteria.md`, remote, at the target seniority (job board APIs from `<skill>/references/job-scout.md`, or a web search). Extract the terms that repeat (skills, tools, practices, soft skills). They feed the ATS keywords and the LinkedIn skills. List the offers you used, with their links, at the end of `candidate.md`.
+Before writing, find 5 to 8 real offers published in the last two weeks for the first one or two `roles` of `jobs/criteria.md`, in the work modes of `work_mode` (and the cities of `locations` for hybrid or on-site), at the target seniority (job board APIs from `<skill>/references/job-scout.md`, or a web search). Extract the terms that repeat (skills, tools, practices, soft skills). They feed the ATS keywords and the LinkedIn skills. List the offers you used, with their links, at the end of `candidate.md`.
 
 If you have no web access, say so and build the keyword list from `criteria.md` and the CV only.
 
@@ -68,7 +68,7 @@ Write it in this Markdown shape: `export-cv.mjs` turns it into the printable pag
 ```markdown
 # Full Name
 Target title · 3–5 core technologies
-Remote (time zone) · email · [LinkedIn](https://…) · [GitHub or portfolio](https://…)
+City, or Remote (time zone) · email · [LinkedIn](https://…) · [GitHub or portfolio](https://…)
 
 ## Summary
 Three lines: years, level, stack, differentiator.
@@ -92,13 +92,13 @@ Contact details come from `cv-source.md`. If one is missing, leave `[PENDING: em
 
 ## Output 3 — `jobs/profile/linkedin.md`
 
-Texts ready to paste, in English (recruiters for remote roles search in English), with the About also in the user's language if it is not English.
+Texts ready to paste, in English (recruiters for international and remote roles search in English; for local hybrid or on-site roles, also in the local language), with the About also in the user's language if it is not English.
 
-- **Headline** (220 characters max): target title · core stack · differentiator · "Open to remote". Give three options.
+- **Headline** (220 characters max): target title · core stack · differentiator · "Open to remote" (only if `work_mode` includes remote). Give three options.
 - **About** (2,600 characters max, aim for 1,500): hook first, then stack and the problems they solve, then the differentiator, then "Open to …" and how to get in touch.
 - **Experience**: each role rewritten with the same bullets as `cv-base.md`.
 - **Skills**: up to 50, in priority order. The first three are the ones LinkedIn shows.
-- **Open to Work** settings: job titles (from `criteria.roles`), "Remote", the locations that match `hire_from`, employment types from `contract_types`, and whether to show it to recruiters only.
+- **Open to Work** settings: job titles (from `criteria.roles`), the work modes of `work_mode`, the locations (`locations`, and for remote the ones that match `hire_from`), employment types from `contract_types`, and whether to show it to recruiters only.
 - **Checklist**: photo, banner, custom URL, Featured section, recommendations worth asking for and from whom (by role, not by name, unless the CV names them).
 
 ## Final answer

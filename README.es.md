@@ -2,7 +2,7 @@
 
 [English](README.md) · **Español**
 
-Tu búsqueda de trabajo remoto, llevada por tu agente de código. Escribes una vez qué buscas; el agente encuentra ofertas, las puntúa contra tus criterios, prepara una candidatura a medida para las que merecen la pena, te prepara las entrevistas y te recuerda hacer seguimiento.
+Tu búsqueda de trabajo, llevada por tu agente de código: remoto, híbrido o presencial, como tú elijas. Escribes una vez qué buscas; el agente encuentra ofertas, las puntúa contra tus criterios, prepara una candidatura a medida para las que merecen la pena, te prepara las entrevistas y te recuerda hacer seguimiento.
 
 Funciona en **Codex**, **Claude Code** y cualquier herramienta que lea **`AGENTS.md`**. Gratis, con licencia MIT.
 
@@ -12,9 +12,9 @@ Funciona en **Codex**, **Claude Code** y cualquier herramienta que lea **`AGENTS
 
 | Comando | Qué hace |
 |---|---|
-| `init` | Crea `jobs/` y te pregunta tus criterios: puestos, stack, salario mínimo, desde qué país te pueden contratar, tipos de contrato, zonas horarias y exclusiones |
+| `init` | Crea `jobs/` y te pregunta tus criterios: puestos, stack, salario mínimo, remoto/híbrido/presencial y ciudades, desde qué país te pueden contratar, tipos de contrato, zonas horarias y exclusiones |
 | `perfil` | Convierte tu CV en un perfil de candidato, un CV base de una página y los textos de LinkedIn pensados para recruiters. Lo que falta vuelve como `[PENDING]`; nunca se inventa |
-| `buscar [today\|week]` | Busca ofertas remotas en LinkedIn (solo lectura, con tu propia sesión del navegador, si tu agente tiene uno) y en boards públicos (RemoteOK, Remotive, Himalayas). Un fichero por oferta, con su puntuación y las pruebas que la justifican |
+| `buscar [today\|week]` | Busca ofertas en las modalidades y ciudades que elegiste, en LinkedIn (solo lectura, con tu propia sesión del navegador, si tu agente tiene uno) y en boards públicos (RemoteOK, Remotive y Himalayas para remoto; Arbeitnow para presencial en Alemania y Europa). Un fichero por oferta, con su puntuación y las pruebas que la justifican |
 | `priorizar [N]` | Vuelve a mirar las ofertas pendientes (¿siguen abiertas?, ¿siguen encajando?) y te da la lista corta de la semana. No cierra nada sin tu OK |
 | `aplicar <oferta>` | CV adaptado (Markdown + HTML imprimible, y DOCX si tienes pandoc), carta breve, mensaje al recruiter, respuestas del formulario y checklist de envío |
 | `entrevista <oferta> [tipo]` | Investigación de la empresa, preguntas técnicas probables del stack de la oferta, live coding, system design, respuestas STAR con tus historias reales, preguntas que hacer y guion de negociación |

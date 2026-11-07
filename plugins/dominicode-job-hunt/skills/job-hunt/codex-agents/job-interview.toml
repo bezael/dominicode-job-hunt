@@ -58,7 +58,7 @@ A case close to the company's product. Answer in six steps: requirements and con
 Conflict, deadline, production incident, mentoring, architecture decision, remote async work, feedback received, failure, and whatever the offer stresses. **Only from the user's real stories** (`candidate.md` → **Stories** and experience). Where there is no real story, write the question with `[PENDING: a real story about …]` instead of an answer.
 
 ### 7. Questions to ask (8–10)
-About the team, the process, on-call, how remote really works, the roadmap, how success in the role is measured, how they use AI. Ordered by what they reveal.
+About the team, the process, on-call, how remote or hybrid work really works, the roadmap, how success in the role is measured, how they use AI. Ordered by what they reveal.
 
 ### 8. Negotiation script
 - **Anchor, target and floor** in the offer's currency and period: floor = `salary_min` converted; target = the target salary in `candidate.md`; anchor = target + 10–15 %. Show the conversion. If the contract type changes the numbers (a contractor pays their own taxes, holidays and equipment), say how much to add.

@@ -1,11 +1,11 @@
 ---
 name: job-hunt
-description: "Remote job hunting for developers. Sets up the search criteria, finds and scores remote offers (LinkedIn through the user's own browser plus public job boards), ranks them, prepares tailored applications and interview prep, and drafts follow-ups. Never submits or sends anything. Use when: the user wants to look for a job, review or rank offers, apply to one, prepare an interview, follow up, or runs job-hunt init, profile, search, rank, apply, interview, follow-up or status (also in Spanish: perfil, buscar, priorizar, aplicar, entrevista, seguimiento, estado)."
+description: "Job hunting for developers, remote, hybrid or on-site. Sets up the search criteria, finds and scores offers (LinkedIn through the user's own browser plus public job boards), ranks them, prepares tailored applications and interview prep, and drafts follow-ups. Never submits or sends anything. Use when: the user wants to look for a job, review or rank offers, apply to one, prepare an interview, follow up, or runs job-hunt init, profile, search, rank, apply, interview, follow-up or status (also in Spanish: perfil, buscar, priorizar, aplicar, entrevista, seguimiento, estado)."
 ---
 
 # Job hunt
 
-You help one developer run a remote job search from a `jobs/` folder in the current working directory. Everything is local Markdown with YAML frontmatter. You prepare; the user decides and sends.
+You help one developer run a job search (remote, hybrid or on-site, as set in the criteria) from a `jobs/` folder in the current working directory. Everything is local Markdown with YAML frontmatter. You prepare; the user decides and sends.
 
 `<skill>` below means the folder that contains this `SKILL.md`. Shared contracts live in `<skill>/references/`:
 
@@ -71,7 +71,7 @@ Sets up `jobs/` and the criteria. Safe to run again at any time.
 2. **Criteria interview.** Ask, one group at a time, and write the answers into the frontmatter of `jobs/criteria.md`:
    1. Target roles and stack (`roles`, `stack.must`, `stack.plus`) and seniority.
    2. Minimum salary and currency (`salary_min`, `currency`), and whether hourly or monthly contracts are fine.
-   3. Country they can be hired from and contract types (`hire_from`, `contract_types`: employee, contractor/B2B, employer of record).
+   3. Work mode (`work_mode`: remote, hybrid, on-site, any mix) and, for hybrid or on-site, the cities they can commute to or would move to (`locations`). Country where they have the right to work and contract types (`hire_from`, `contract_types`: employee, contractor/B2B, employer of record). If `work_mode` has no `remote`, replace the remote-only boards in `boards` (see `<skill>/references/job-scout.md`).
    4. Time zones they can overlap with, working languages and exclusions (industries, company types, on-call, anything else).
    Keep the default weights and thresholds unless they ask; explain in one sentence that they can tune them later in the same file.
 3. **CV.** Ask the user to paste their CV, or the text of their LinkedIn profile export, into `jobs/profile/cv-source.md` (or to paste it in the chat so you save it there). Without it, `profile` cannot run.

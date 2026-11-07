@@ -1,7 +1,7 @@
 {
   "name": "dominicode-job-hunt",
-  "version": "1.0.0",
-  "description": "Remote job hunting for developers: a skill plus five role agents for Codex (agents installed by the skill), Claude Code and any AGENTS.md-compatible tool.",
+  "version": "1.1.0",
+  "description": "Job hunting for developers (remote, hybrid or on-site): a skill plus five role agents for Codex (agents installed by the skill), Claude Code and any AGENTS.md-compatible tool.",
   "author": {
     "name": "Bezael Pérez · Dominicode"
   },
