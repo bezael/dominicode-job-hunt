@@ -1,0 +1,21 @@
+{
+  "name": "dominicode-job-hunt",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Remote job hunting for developers: a skill plus five role agents for Codex (agents installed by the skill), Claude Code and any AGENTS.md-compatible tool.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Bezael Pérez · Dominicode",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node scripts/run-tests.mjs && node scripts/build.mjs --check",
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs --check"
+  },
+  "devDependencies": {
+    "smol-toml": "^1.3.1",
+    "yaml": "^2.6.1"
+  }
+}

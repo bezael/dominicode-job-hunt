@@ -1,0 +1,3 @@
+# Your job search stays on your machine: CV, offers, applications.
+# This keeps the whole jobs/ folder out of git, even inside a repository.
+*

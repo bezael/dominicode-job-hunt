@@ -1,0 +1,10 @@
+node_modules/
+dist/
+specs/**/.work/
+.DS_Store
+
+# Datos del usuario: CV, ofertas y candidaturas nunca van a git
+/jobs/
+
+# Lista privada del detector de fugas: revela a qué empresas se ha aplicado
+.leak-blocklist.local
